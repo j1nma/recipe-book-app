@@ -25,4 +25,9 @@ export class RecipeService {
     addIngredientsToShoppingList(ingredients: Ingredient[]) {
         this.shoppingListService.addIngredients(ingredients);
     }
+
+    getRecipe(id: number) {
+        const recipe = this.recipes[id]; // Synchronous code. Resolves instantly.
+        return recipe;
+    }
 }
