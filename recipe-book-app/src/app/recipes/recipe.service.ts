@@ -6,6 +6,7 @@ import { Subject, Subscription } from 'rxjs';
 
 @Injectable()
 export class RecipeService {
+    recipesChanged = new Subject<Recipe[]>();
 
     private recipes: Recipe[] = [
         new Recipe("Schnitzel", "This is simply a test", "https://cdn.pixabay.com/photo/2016/06/15/19/09/food-1459693_1280.jpg",
@@ -28,5 +29,15 @@ export class RecipeService {
 
     getRecipe(index: number) {
         return this.recipes[index];
+    }
+
+    addRecipe(recipe: Recipe) {
+        this.recipes.push(recipe);
+        this.recipesChanged.next(this.recipes.slice());
+    }
+
+    updateRecipe(index: number, newRecipe: Recipe) {
+        this.recipes[index] = newRecipe;
+        this.recipesChanged.next(this.recipes.slice());
     }
 }
