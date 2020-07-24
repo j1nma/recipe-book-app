@@ -26,28 +26,23 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-        return this.authService.user.pipe(
-            take(1), // get user once and the unsubscribe; take 1 value and the unsubscribe
-            exhaustMap(user => {
-                return this.http.get<Recipe[]>(
-                    'https://ng-course-recipe-book-fcbcd.firebaseio.com/recipes.json',
-                    {
-                        params: new HttpParams().set('auth', user.token)
-                    }
-                );
-            }),
-            map(recipes => {
-                return recipes.map(recipe => {
-                    return {
-                        ...recipe,
-                        ingredients: recipe.ingredients ? recipe.ingredients : []
-                    };
-                });
-            }),
-            tap(recipes => {
-                this.recipeServices.setRecipes(recipes);
-            })
-        );
+        return this.http
+            .get<Recipe[]>(
+                'https://ng-course-recipe-book-fcbcd.firebaseio.com/recipes.json'
+            )
+            .pipe(
+                map(recipes => {
+                    return recipes.map(recipe => {
+                        return {
+                            ...recipe,
+                            ingredients: recipe.ingredients ? recipe.ingredients : []
+                        };
+                    });
+                }),
+                tap(recipes => {
+                    this.recipeServices.setRecipes(recipes);
+                })
+            );
         // Here we don't need to subscribe from the triggering/calling component
     }
 }
