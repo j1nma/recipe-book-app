@@ -30,9 +30,17 @@ export class AuthService {
                     returnSecureToken: true,
                 }
             )
-            .pipe(catchError(this.handleError), tap(res => {
-                this.handleAuthentication(res.email, res.localId, res.idToken, +res.expiresIn);
-            }));
+            .pipe(
+                catchError(this.handleError),
+                tap(res => {
+                    this.handleAuthentication(
+                        res.email,
+                        res.localId,
+                        res.idToken,
+                        +res.expiresIn
+                    );
+                })
+            );
     }
 
     login(email: string, password: string) {
@@ -45,9 +53,17 @@ export class AuthService {
                     returnSecureToken: true,
                 }
             )
-            .pipe(catchError(this.handleError), tap(res => {
-                this.handleAuthentication(res.email, res.localId, res.idToken, +res.expiresIn);
-            }));
+            .pipe(
+                catchError(this.handleError),
+                tap(res => {
+                    this.handleAuthentication(
+                        res.email,
+                        res.localId,
+                        res.idToken,
+                        +res.expiresIn
+                    );
+                })
+            );
     }
 
     private handleError(errorResponse: HttpErrorResponse) {
@@ -69,7 +85,12 @@ export class AuthService {
         return throwError(errorMessage);
     }
 
-    private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
+    private handleAuthentication(
+        email: string,
+        userId: string,
+        token: string,
+        expiresIn: number
+    ) {
         const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
         const user = new User(email, userId, token, expirationDate);
         this.user.next(user);

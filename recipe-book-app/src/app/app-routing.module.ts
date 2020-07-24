@@ -11,18 +11,20 @@ import { AuthComponent } from './auth/auth.component';
 const appRoutes: Routes = [
     { path: '', redirectTo: '/recipes', pathMatch: 'full' },
     {
-        path: 'recipes', component: RecipesComponent, children: [
+        path: 'recipes',
+        component: RecipesComponent,
+        children: [
+            { path: '', component: RecipeStartComponent },
+            { path: 'new', component: RecipeEditComponent },
             {
-                path: '', component: RecipeStartComponent, pathMatch: 'full', resolve: [RecipesResolverService],
+                path: ':id',
+                component: RecipeDetailComponent,
+                resolve: [RecipesResolverService],
             },
             {
-                path: 'new', component: RecipeEditComponent,
-            },
-            {
-                path: ':id', component: RecipeDetailComponent, resolve: [RecipesResolverService],
-            },
-            {
-                path: ':id/edit', component: RecipeEditComponent, resolve: [RecipesResolverService],
+                path: ':id/edit',
+                component: RecipeEditComponent,
+                resolve: [RecipesResolverService],
             }
         ]
     },
@@ -34,6 +36,4 @@ const appRoutes: Routes = [
     imports: [RouterModule.forRoot(appRoutes)],
     exports: [RouterModule]
 })
-export class AppRoutingModule {
-
-}
+export class AppRoutingModule { }
