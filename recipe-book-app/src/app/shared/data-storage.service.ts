@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class DataStorageService {
@@ -23,18 +23,18 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
-        this.http
+        return this.http
             .get<Recipe[]>('https://ng-course-recipe-book-fcbcd.firebaseio.com/recipes.json')
             .pipe(
                 map(recipes => {
                     return recipes.map(r => {
                         return { ...r, ingredients: r.ingredients ? r.ingredients : [] };
                     });
+                }),
+                tap(recipes => {
+                    this.recipeServices.setRecipes(recipes);
                 })
             )
-            .subscribe(recipes => {
-                this.recipeServices.setRecipes(recipes);
-            });
         // Here we don't need to subscribe from the triggering/calling component
     }
 
