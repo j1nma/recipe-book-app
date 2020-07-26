@@ -66,6 +66,7 @@ import { PlaceholderDirective } from './shared/placeholder/placeholder.directive
     },
     AuthGuard
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AlertComponent]
 })
 export class AppModule { }
