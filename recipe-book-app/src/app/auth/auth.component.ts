@@ -1,7 +1,7 @@
-import { Component, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService, AuthResponseData } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertComponent } from '../shared/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
@@ -10,11 +10,13 @@ import { PlaceholderDirective } from '../shared/placeholder/placeholder.directiv
     selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
     isLoginMode = true;
     isLoading = false;
     errorMessage: string = null;
     @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
+
+    private closeSub: Subscription;
 
     constructor(
         private authService: AuthService,
@@ -61,6 +63,10 @@ export class AuthComponent {
         this.errorMessage = null;
     }
 
+    ngOnDestroy(): void {
+        if (this.closeSub) this.closeSub.unsubscribe();
+    }
+
     private showErrorAlert(message: string) {
         // programmatically create alert component
         const alertComponentFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
@@ -69,7 +75,13 @@ export class AuthComponent {
         const hostViewContainerRef = this.alertHost.viewContainerRef;
         hostViewContainerRef.clear(); // render anything that was before
 
-        hostViewContainerRef.createComponent(alertComponentFactory);
+        const componentRef = hostViewContainerRef.createComponent(alertComponentFactory);
+
+        componentRef.instance.message = message;
+        this.closeSub = componentRef.instance.close.subscribe(() => {
+            this.closeSub.unsubscribe(); // clear subscription, remove component
+            hostViewContainerRef.clear();
+        });
     }
 
 }
