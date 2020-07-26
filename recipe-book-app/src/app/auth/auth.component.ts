@@ -67,6 +67,7 @@ export class AuthComponent implements OnDestroy {
         if (this.closeSub) this.closeSub.unsubscribe();
     }
 
+    // ngIf approach is better than this programmatical approach
     private showErrorAlert(message: string) {
         // programmatically create alert component
         const alertComponentFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
