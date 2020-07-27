@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 
 import { ShoppingListComponent } from './shopping-list.component';
@@ -20,6 +18,4 @@ import { SharedModule } from '../shared/shared.module';
         SharedModule
     ]
 })
-export class ShoppingListModule {
-
-}
+export class ShoppingListModule { }
