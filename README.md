@@ -2,6 +2,8 @@
 
 Available at: https://ng-course-recipe-book-fcbcd.web.app
 
+<img src="https://github.com/j1nma/recipe-book-app/blob/master/screenshot.png?raw=true" width="400"/>
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.2.
 
 ## Development server
