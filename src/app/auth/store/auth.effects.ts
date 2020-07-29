@@ -78,6 +78,7 @@ export class AuthEffects {
 
     @Effect()
     authSignup = this.actions$.pipe(
+        ofType(AuthActions.SIGNUP_START)
 
     );
 }
