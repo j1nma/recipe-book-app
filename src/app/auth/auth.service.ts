@@ -73,42 +73,4 @@ export class AuthService {
     autoLogout(expirationDuration: number) {
         this.tokenExpirationTimer = setTimeout(() => { this.logout() }, expirationDuration);
     }
-
-    private handleError(errorResponse: HttpErrorResponse) {
-        let errorMessage = 'An unknown error occured';
-        if (!errorResponse.error || !errorResponse.error.error) {
-            return throwError(errorMessage);
-        }
-        switch (errorResponse.error.error.message) {
-            case 'EMAIL_EXISTS':
-                errorMessage = 'This email exists.';
-                break;
-            case 'EMAIL_NOT_FOUND':
-                errorMessage = 'This email is not found.';
-                break;
-            case 'INVALID_PASSWORD':
-                errorMessage = 'This password is not correct.';
-                break;
-        }
-        return throwError(errorMessage);
-    }
-
-    private handleAuthentication(
-        email: string,
-        userId: string,
-        token: string,
-        expiresIn: number
-    ) {
-        const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-        const user = new User(email, userId, token, expirationDate);
-        // this.user.next(user);
-        this.store.dispatch(new AuthActions.AuthenticateSuccess({
-            email: email,
-            userId: userId,
-            token: token,
-            expirationDate: expirationDate
-        }))
-        this.autoLogout(expiresIn * 1000);
-        localStorage.setItem('userData', JSON.stringify(user));
-    }
 }
