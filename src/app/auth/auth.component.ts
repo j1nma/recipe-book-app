@@ -20,6 +20,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
 
     private closeSub: Subscription;
+    private storeSub: Subscription;
 
     constructor(
         private authService: AuthService,
@@ -29,7 +30,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.store.select('auth').subscribe(authState => {
+        this.storeSub = this.store.select('auth').subscribe(authState => {
             this.isLoading = authState.loading;
             this.errorMessage = authState.authError;
             if (this.errorMessage) this.showErrorAlert(this.errorMessage);
@@ -65,11 +66,12 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
 
     onHandleError() {
-        this.errorMessage = null;
+        this.store.dispatch(new AuthActions.ClearError());
     }
 
     ngOnDestroy(): void {
         if (this.closeSub) this.closeSub.unsubscribe();
+        if (this.storeSub) this.storeSub.unsubscribe();
     }
 
     // ngIf approach is better than this programmatical approach
