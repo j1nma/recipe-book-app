@@ -41,7 +41,7 @@ export class AuthEffects {
                 ).pipe(
                     map(resData => {
                         const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
-                        return new AuthActions.Login({
+                        return new AuthActions.AuthenticateSuccess({
                             email: resData.email,
                             userId: resData.localId,
                             token: resData.idToken,
@@ -51,7 +51,7 @@ export class AuthEffects {
                     catchError(errorResponse => {
                         let errorMessage = 'An unknown error occured';
                         if (!errorResponse.error || !errorResponse.error.error) {
-                            return of(new AuthActions.LoginFail(errorMessage));
+                            return of(new AuthActions.AuthenticateFail(errorMessage));
                         }
                         switch (errorResponse.error.error.message) {
                             case 'EMAIL_EXISTS':
@@ -64,15 +64,20 @@ export class AuthEffects {
                                 errorMessage = 'This password is not correct.';
                                 break;
                         }
-                        return of(new AuthActions.LoginFail(errorMessage));
+                        return of(new AuthActions.AuthenticateFail(errorMessage));
                     }))
         }),
     );
 
     @Effect({ dispatch: false })
     authSuccess = this.actions$.pipe(
-        ofType(AuthActions.LOGIN),
+        ofType(AuthActions.AUTHENTICATE_SUCCESS),
         tap(() => {
             this.router.navigate(['/']);
         }));
+
+    @Effect()
+    authSignup = this.actions$.pipe(
+
+    );
 }
