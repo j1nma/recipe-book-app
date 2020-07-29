@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ComponentFactoryResolver, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService, AuthResponseData } from './auth.service';
 import { Observable, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import * as AuthActions from './store/auth.actions';
     selector: 'app-auth',
     templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnDestroy {
+export class AuthComponent implements OnInit, OnDestroy {
     isLoginMode = true;
     isLoading = false;
     errorMessage: string = null;
@@ -27,6 +27,13 @@ export class AuthComponent implements OnDestroy {
         private componentFactoryResolver: ComponentFactoryResolver,
         private store: Store<fromApp.AppState>
     ) { }
+
+    ngOnInit(): void {
+        this.store.select('auth').subscribe(authState => {
+            this.isLoading = authState.loading;
+            this.errorMessage = authState.authError;
+        });
+    }
 
     onSwitchMode() {
         this.isLoginMode = !this.isLoginMode;
@@ -54,17 +61,17 @@ export class AuthComponent implements OnDestroy {
             authObs = this.authService.signup(email, password);
         }
 
-        authObs.subscribe(
-            resData => {
-                console.log(resData);
-                this.isLoading = false;
-                this.router.navigate(['/recipes']);
-            },
-            errorMessage => {
-                this.errorMessage = errorMessage;
-                this.showErrorAlert(errorMessage);
-                this.isLoading = false;
-            });
+        // authObs.subscribe(
+        //     resData => {
+        //         console.log(resData);
+        //         this.isLoading = false;
+        //         this.router.navigate(['/recipes']);
+        //     },
+        //     errorMessage => {
+        //         this.errorMessage = errorMessage;
+        //         this.showErrorAlert(errorMessage);
+        //         this.isLoading = false;
+        //     });
 
         form.reset();
     }
