@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.css']
+  styleUrls: ['./recipe-list.component.css'],
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[];
@@ -19,15 +19,15 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromApp.AppState>
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.susbcription = this.store
       .select('recipes')
-      .pipe(map(recipesState => recipesState.recipes))
+      .pipe(map((recipesState) => recipesState.recipes))
       .subscribe((recipes: Recipe[]) => {
         this.recipes = recipes;
-      })
+      });
   }
 
   onNewRecipe() {

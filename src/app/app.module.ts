@@ -19,10 +19,7 @@ import * as fromApp from './store/app.reducer';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-  ],
+  declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
@@ -33,9 +30,9 @@ import { environment } from 'src/environments/environment';
     StoreRouterConnectingModule.forRoot(),
     BrowserAnimationsModule,
     SharedModule,
-    CoreModule
+    CoreModule,
   ],
   bootstrap: [AppComponent],
-  providers: [LoggingService]
+  providers: [LoggingService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -7,15 +7,15 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
-    providers: [
-        RecipesResolverService,
-        AuthService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptorService,
-            multi: true
-        },
-        AuthGuard
-    ]
+  providers: [
+    RecipesResolverService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+    AuthGuard,
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}

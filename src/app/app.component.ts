@@ -8,15 +8,14 @@ import * as AuthActions from './auth/store/auth.actions';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-
   constructor(
     private store: Store<fromApp.AppState>,
     private loggingService: LoggingService,
     @Inject(PLATFORM_ID) private platformId
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {

@@ -1,4 +1,8 @@
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import {
+  Resolve,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { Recipe } from './recipe.model';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -14,28 +18,32 @@ import { take, map, switchMap } from 'rxjs/operators';
 // defined for specific routes
 @Injectable()
 export class RecipesResolverService implements Resolve<Recipe[]> {
-    constructor(
-        private store: Store<fromApp.AppState>,
-        private actions$: Actions,
-    ) { }
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private actions$: Actions
+  ) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
-        // Only fetch new ones if we don't have any
-        return this.store.select('recipes')
-            .pipe(
-                take(1),
-                map(recipesState => {
-                    return recipesState.recipes;
-                }),
-                switchMap(recipes => {
-                    if (recipes.length == 0) {
-                        this.store.dispatch(new RecipesActions.FetchRecipes());
-                        return this.actions$.pipe(
-                            ofType(RecipesActions.SET_RECIPES),
-                            take(1));
-                    } else {
-                        return of(recipes); // don't send any request if we already have recipes
-                    }
-                }));
-    }
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Recipe[] | Observable<Recipe[]> | Promise<Recipe[]> {
+    // Only fetch new ones if we don't have any
+    return this.store.select('recipes').pipe(
+      take(1),
+      map((recipesState) => {
+        return recipesState.recipes;
+      }),
+      switchMap((recipes) => {
+        if (recipes.length == 0) {
+          this.store.dispatch(new RecipesActions.FetchRecipes());
+          return this.actions$.pipe(
+            ofType(RecipesActions.SET_RECIPES),
+            take(1)
+          );
+        } else {
+          return of(recipes); // don't send any request if we already have recipes
+        }
+      })
+    );
+  }
 }

@@ -8,14 +8,12 @@ import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [
-        AuthComponent,
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        RouterModule.forChild([{ path: '', component: AuthComponent }]),
-        SharedModule
-    ],
+  declarations: [AuthComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule.forChild([{ path: '', component: AuthComponent }]),
+    SharedModule,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

@@ -7,25 +7,22 @@ import { PlaceholderDirective } from './placeholder/placeholder.directive';
 import { DropdownDirective } from './dropdown.directive';
 import { LoggingService } from '../logging.service';
 
-
 @NgModule({
-    declarations: [
-        AlertComponent,
-        LoadingSpinnerComponent,
-        PlaceholderDirective,
-        DropdownDirective,
-    ],
-    imports: [
-        CommonModule
-    ],
-    exports: [
-        AlertComponent,
-        LoadingSpinnerComponent,
-        PlaceholderDirective,
-        DropdownDirective,
-        CommonModule
-    ],
-    entryComponents: [AlertComponent],
-    providers: [LoggingService]
+  declarations: [
+    AlertComponent,
+    LoadingSpinnerComponent,
+    PlaceholderDirective,
+    DropdownDirective,
+  ],
+  imports: [CommonModule],
+  exports: [
+    AlertComponent,
+    LoadingSpinnerComponent,
+    PlaceholderDirective,
+    DropdownDirective,
+    CommonModule,
+  ],
+  entryComponents: [AlertComponent],
+  providers: [LoggingService],
 })
-export class SharedModule { }
+export class SharedModule {}
