@@ -10,7 +10,7 @@ import * as ShippingListActions from '../../shopping-list/store/shopping-list.ac
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+  styleUrls: ['./recipe-detail.component.css'],
 })
 export class RecipeDetailComponent implements OnInit {
   recipe: Recipe;
@@ -20,27 +20,33 @@ export class RecipeDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromApp.AppState>
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.params // angular takes responsability for this subscription
-      .pipe(map(params => {
-        return +params.id;
-      }), switchMap(id => {
-        this.id = id;
-        return this.store.select('recipes');
-      }), map(recipeState => {
-        return recipeState.recipes.find((recipe, index) => {
-          return index === this.id;
+      .pipe(
+        map((params) => {
+          return +params.id;
+        }),
+        switchMap((id) => {
+          this.id = id;
+          return this.store.select('recipes');
+        }),
+        map((recipeState) => {
+          return recipeState.recipes.find((recipe, index) => {
+            return index === this.id;
+          });
         })
-      }))
-      .subscribe(recipe => {
+      )
+      .subscribe((recipe) => {
         this.recipe = recipe;
       });
   }
 
   onAddToShoppingList() {
-    this.store.dispatch(new ShippingListActions.AddIngredients(this.recipe.ingredients));
+    this.store.dispatch(
+      new ShippingListActions.AddIngredients(this.recipe.ingredients)
+    );
     this.router.navigate(['/shopping-list']);
   }
 
