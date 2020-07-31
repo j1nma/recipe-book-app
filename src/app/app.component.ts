@@ -11,6 +11,8 @@ import * as AuthActions from './auth/store/auth.actions';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  title = 'Recipe Book App';
+
   constructor(
     private store: Store<fromApp.AppState>,
     private loggingService: LoggingService,
